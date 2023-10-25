@@ -281,24 +281,13 @@ class _StylishBottomBarState extends State<StylishBottomBar>
     return Semantics(
       explicitChildNodes: true,
       child: widget.hasNotch
-          ? PhysicalShape(
-              elevation: widget.elevation,
-              color: widget.backgroundColor ?? Colors.white,
-              clipper: BarClipper(
-                shape: isUsingMaterial3
-                    ? const AutomaticNotchedShape(
-                        RoundedRectangleBorder(),
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(18),
-                          ),
-                        ),
-                      )
-                    : const CircularNotchedRectangle(),
-                geometry: _geometryListenable!,
-                notchMargin: isUsingMaterial3 ? 6 : 8,
-              ),
-              child: ClipPath(
+          ? Container(
+            decoration: BoxDecoration(
+              gradient: widget.gradient
+            ),
+            child: PhysicalShape(
+                elevation: widget.elevation,
+                color: widget.backgroundColor ?? Colors.white,
                 clipper: BarClipper(
                   shape: isUsingMaterial3
                       ? const AutomaticNotchedShape(
@@ -313,15 +302,31 @@ class _StylishBottomBarState extends State<StylishBottomBar>
                   geometry: _geometryListenable!,
                   notchMargin: isUsingMaterial3 ? 6 : 8,
                 ),
-                child: innerWidget(
-                  context,
-                  additionalBottomPadding,
-                  widget.fabLocation,
-                  listWidget,
-                  options is AnimatedBarOptions ? options.barAnimation : null,
+                child: ClipPath(
+                  clipper: BarClipper(
+                    shape: isUsingMaterial3
+                        ? const AutomaticNotchedShape(
+                            RoundedRectangleBorder(),
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(18),
+                              ),
+                            ),
+                          )
+                        : const CircularNotchedRectangle(),
+                    geometry: _geometryListenable!,
+                    notchMargin: isUsingMaterial3 ? 6 : 8,
+                  ),
+                  child: innerWidget(
+                    context,
+                    additionalBottomPadding,
+                    widget.fabLocation,
+                    listWidget,
+                    options is AnimatedBarOptions ? options.barAnimation : null,
+                  ),
                 ),
               ),
-            )
+          )
           : Material(
               elevation: widget.elevation,
               // color: widget.backgroundColor ?? Colors.white,
